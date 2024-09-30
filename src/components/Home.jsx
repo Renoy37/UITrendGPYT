@@ -22,11 +22,15 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="title">Backtest Your Strategy</h1>
+      <h1 className="title">Backtest Your Strategy and Start Your Bot</h1>
       <p>Press the button below to run the backtest.</p>
 
       <button className="btn" onClick={startBacktest} disabled={loading}>
         Start Backtest
+      </button>
+      <div></div>
+      <button className="btn">
+        Run Bot
       </button>
 
       {loading && (
