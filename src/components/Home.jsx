@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import {
   LineChart,
   Line,
@@ -69,9 +68,9 @@ const Home = () => {
         strategy.
       </p>
 
-      <div className="flex justify-center space-x-4 mb-8">
+      <div className="flex flex-col md:flex-row justify-center space-x-0 md:space-x-4 mb-8">
         <button
-          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center"
+          className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full transition duration-300 flex items-center mb-4 md:mb-0"
           onClick={startBacktest}
           disabled={loading}
         >
