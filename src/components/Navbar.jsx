@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import { TrendingUp, Menu, X } from "lucide-react";
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false); // State for hamburger menu
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen); // Toggle menu open/close
+    setIsOpen(!isOpen);
   };
 
   return (
@@ -29,20 +30,64 @@ const Navbar = () => {
         {/* Navigation Links */}
         <ul
           className={`md:flex md:items-center w-full md:w-auto transition-all duration-300 ease-in-out ${
-            isOpen ? "block" : "hidden" // Show/hide menu
+            isOpen ? "block" : "hidden"
           }`}
         >
-          {["Backtest", "Run Bot", "Strategies", "About"].map((item) => (
-            <li key={item} className="md:mr-6 mt-2 md:mt-0">
-              <a
-                href={`#${item.toLowerCase().replace(" ", "-")}`}
-                className="text-white hover:text-gray-300 transition duration-300"
-                onClick={() => setIsOpen(false)} // Close menu on link click
-              >
-                {item}
-              </a>
-            </li>
-          ))}
+          <li className="md:mr-6 mt-2 md:mt-0">
+            <NavLink
+              to="/" // Link to Home page
+              className={({ isActive }) =>
+                `text-white hover:text-gray-300 transition duration-300 ${
+                  isActive ? "text-yellow-400" : ""
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              Run Bot
+            </NavLink>
+          </li>
+
+          <li className="md:mr-6 mt-2 md:mt-0">
+            <NavLink
+              to="/strategies" // Link to Strategies/Backtest page
+              className={({ isActive }) =>
+                `text-white hover:text-gray-300 transition duration-300 ${
+                  isActive ? "text-yellow-400" : ""
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              Strategies
+            </NavLink>
+          </li>
+
+          <li className="md:mr-6 mt-2 md:mt-0">
+            <NavLink
+              to="/backtest" // Link to StrategiesPage via /backtest
+              className={({ isActive }) =>
+                `text-white hover:text-gray-300 transition duration-300 ${
+                  isActive ? "text-yellow-400" : ""
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              Backtest
+            </NavLink>
+          </li>
+
+          <li className="md:mr-6 mt-2 md:mt-0">
+            <NavLink
+              to="/about"
+              className={({ isActive }) =>
+                `text-white hover:text-gray-300 transition duration-300 ${
+                  isActive ? "text-yellow-400" : ""
+                }`
+              }
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>
