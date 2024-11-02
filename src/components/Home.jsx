@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { BarChart2, Play } from "lucide-react";
 import BacktestResults from "./BacktestResults.jsx";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import { Link } from "react-router-dom"; 
 import { X } from "lucide-react";
 
 const Home = () => {
