@@ -1,9 +1,11 @@
+// File: App.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import StrategiesPage from "./components/Strategies";
+import Home from "./components/Home";
 import About from "./components/About";
+import Strategies from "./components/Strategies";
+import RunBot from "./components/RunBot";
 
 function App() {
   return (
@@ -11,9 +13,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/strategies" element={<StrategiesPage />} />
-        <Route path="/backtest" element={<StrategiesPage />} />
-        <Route path="/about" element={<About />} /> {/* About page route */}
+        <Route path="/about" element={<About />} />
+        <Route path="/strategies" element={<Strategies />} />
+        <Route path="/run-bot" element={<RunBot />} />
       </Routes>
     </Router>
   );
