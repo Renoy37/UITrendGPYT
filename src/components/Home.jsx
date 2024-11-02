@@ -1,7 +1,7 @@
-// File: components/Home.js
 import React, { useState } from "react";
 import { BarChart2, Play } from "lucide-react";
-import BacktestResults from "./BacktestResults.jsx"; // Import BacktestResults component
+import BacktestResults from "./BacktestResults.jsx";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import { X } from "lucide-react";
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
 
   const startBacktest = () => {
     setLoading(true);
-    setBacktestView(true); // Show BacktestResults component
+    setBacktestView(true);
 
     // Simulate backtest data and loading
     setTimeout(() => {
@@ -41,23 +41,20 @@ const Home = () => {
   };
 
   const exitBacktest = () => {
-    setBacktestView(false); // Hide BacktestResults component
-    setResult(null); // Reset result data
+    setBacktestView(false);
+    setResult(null);
   };
 
   return (
     <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-12">
       {backtestView ? (
-        // Display BacktestResults component
         <BacktestResults
           loading={loading}
           result={result}
           onExit={exitBacktest}
         />
       ) : (
-        // Main Content View
         <>
-          {/* Hero Section */}
           <section className="text-center mb-12">
             <h1 className="text-5xl font-bold text-gray-800 mb-4">
               Welcome to <span className="text-purple-700">TrendGYPT</span>
@@ -76,17 +73,16 @@ const Home = () => {
                 <BarChart2 className="mr-2" />
                 {loading ? "Running Backtest..." : "Start Backtest"}
               </button>
-              <a
-                href="/strategies"
+              <Link
+                to="/strategies" // Use Link for client-side navigation
                 className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center transition duration-300"
               >
                 <Play className="mr-2" />
                 Explore Bots
-              </a>
+              </Link>
             </div>
           </section>
 
-          {/* Key Features Section */}
           <section className="mb-12">
             <h2 className="text-3xl font-semibold text-center text-gray-800 mb-8">
               Why Choose TrendGYPT?
