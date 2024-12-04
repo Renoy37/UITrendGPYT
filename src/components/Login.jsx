@@ -1,13 +1,37 @@
-// File: components/LoginModal.js
-import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react"; // Import icons for password toggle
+// react-frontend/src/components/LoginModal.jsx
+
+import React, { useState, useContext } from "react";
+import { Eye, EyeOff } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
+import axios from "axios";
 
 const LoginModal = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Sign Up
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const { isAuthenticated } = useContext(AuthContext);
 
   const toggleForm = () => setIsLogin(!isLogin);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+
+  const handleLoginWithDeriv = () => {
+    console.log("Login with Deriv button clicked"); // Debug log
+    const appID = import.meta.env.VITE_DERIV_APP_ID; // Use Vite's env variables
+    console.log("Deriv App ID:", appID); // Debug log
+    const redirectURI = `${
+      import.meta.env.VITE_BACKEND_URL
+    }/oauth/auth/callback`; // Flask callback URL
+    const scope = "read,trade";
+    const derivLoginURL = `https://oauth.binary.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
+      redirectURI
+    )}`;
+    console.log("Deriv Login URL:", derivLoginURL); // Debug log
+    window.location.href = derivLoginURL; // Redirect user to Deriv's OAuth page
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle traditional login or sign-up if needed
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -22,56 +46,70 @@ const LoginModal = ({ onClose }) => {
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
 
-        {/* Form */}
-        <form className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Username
-            </label>
-            <input
-              type="text"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              required
-            />
+        {!isAuthenticated ? (
+          // Show message to log in with Deriv first
+          <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
+            <p className="text-center font-semibold">
+              Please log in with Deriv before accessing your account.
+            </p>
+            <button
+              onClick={handleLoginWithDeriv}
+              className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+            >
+              Log in with Deriv
+            </button>
           </div>
-          {!isLogin && (
+        ) : (
+          // Show login form if Deriv token exists
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Email
+                Username
               </label>
               <input
-                type="email"
+                type="text"
                 className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 required
               />
             </div>
-          )}
-          <div className="relative">
-            <label className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type={showPassword ? "text" : "password"} // Toggle password visibility
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              required
-            />
+            {!isLogin && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  required
+                />
+              </div>
+            )}
+            <div className="relative">
+              <label className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type={showPassword ? "text" : "password"}
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                required
+              />
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+              type="submit"
+              className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-md"
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              {isLogin ? "Log In" : "Sign Up"}
             </button>
-          </div>
-          <button
-            type="submit"
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-md"
-          >
-            {isLogin ? "Log In" : "Sign Up"}
-          </button>
-        </form>
+          </form>
+        )}
 
-        {/* Toggle between Login and Sign Up */}
         <p className="text-center text-gray-600 mt-4">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
