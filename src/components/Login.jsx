@@ -21,7 +21,7 @@ const LoginModal = ({ onClose }) => {
       import.meta.env.VITE_BACKEND_URL
     }/oauth/auth/callback`; // Flask callback URL
     const scope = "read,trade";
-    const derivLoginURL = `https://oauth.binary.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
+    const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
       redirectURI
     )}`;
     console.log("Deriv Login URL:", derivLoginURL); // Debug log
