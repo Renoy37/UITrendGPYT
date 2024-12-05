@@ -1,38 +1,13 @@
-// react-frontend/src/components/Dashboard.jsx
+// src/components/Dashboard.jsx
 
-import React, { useContext, useEffect } from "react";
-import axios from "axios";
+import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
-  const { profile, setProfile, logout, isAuthenticated, loading } =
-    useContext(AuthContext);
-
-  useEffect(() => {
-    if (isAuthenticated && !profile) {
-      console.log("Fetching user profile...");
-      axios
-        .get(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
-          withCredentials: true,
-        })
-        .then((response) => {
-          console.log("Profile fetched:", response.data);
-          if (response.data && !response.data.error) {
-            setProfile(response.data);
-          }
-        })
-        .catch((error) => {
-          console.error("Failed to fetch profile:", error);
-        });
-    }
-  }, [profile, setProfile, isAuthenticated]);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { profile, logout } = useContext(AuthContext);
 
   if (!profile) {
-    return <div>No profile data available.</div>;
+    return <div>Loading profile...</div>;
   }
 
   return (

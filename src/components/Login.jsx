@@ -32,6 +32,7 @@ const LoginModal = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Traditional login/sign-up submitted");
+    // Implement traditional login/sign-up logic if needed
   };
 
   useEffect(() => {
