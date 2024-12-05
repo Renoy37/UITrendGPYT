@@ -6,36 +6,34 @@ import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 
 const LoginModal = ({ onClose }) => {
-  const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Sign Up
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
+  const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   const toggleForm = () => setIsLogin(!isLogin);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLoginWithDeriv = () => {
-    console.log("Login with Deriv button clicked"); // Debug log
-    const appID = import.meta.env.VITE_DERIV_APP_ID; // Use Vite's env variables
-    console.log("Deriv App ID:", appID); // Debug log
+    console.log("Login with Deriv button clicked");
+    const appID = import.meta.env.VITE_DERIV_APP_ID;
+    console.log("Deriv App ID:", appID);
     const redirectURI = `${
       import.meta.env.VITE_BACKEND_URL
-    }/oauth/auth/callback`; // Flask callback URL
-    console.log("Redirect URI:", redirectURI); // Debug log
+    }/oauth/auth/callback`;
+    console.log("Redirect URI:", redirectURI);
     const scope = "read,trade";
     const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
       redirectURI
     )}`;
-    console.log("Deriv Login URL:", derivLoginURL); // Debug log
-    window.location.href = derivLoginURL; // Redirect user to Deriv's OAuth page
+    console.log("Deriv Login URL:", derivLoginURL);
+    window.location.href = derivLoginURL;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle traditional login or sign-up if needed
-    console.log("Traditional login/sign-up submitted"); // Debug log
+    console.log("Traditional login/sign-up submitted");
   };
 
-  // Optional: Log authentication status changes
   useEffect(() => {
     console.log("Authentication status:", isAuthenticated);
   }, [isAuthenticated]);

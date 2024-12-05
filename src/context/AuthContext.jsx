@@ -3,17 +3,14 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 
-// Create the context
 export const AuthContext = createContext();
 
-// Create a provider component
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(true); // To handle loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check authentication status on component mount
     console.log("Checking authentication status...");
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
@@ -24,9 +21,11 @@ export const AuthProvider = ({ children }) => {
         if (response.data && !response.data.error) {
           setIsAuthenticated(true);
           setProfile(response.data);
+          console.log("User authenticated and profile set.");
         } else {
           setIsAuthenticated(false);
           setProfile(null);
+          console.log("Authentication failed. Profile cleared.");
         }
         setLoading(false);
       })
@@ -48,7 +47,7 @@ export const AuthProvider = ({ children }) => {
         console.log("Logout response:", response.data);
         setIsAuthenticated(false);
         setProfile(null);
-        // Optionally, redirect to home or login page
+        // Optionally, redirect to login or home page
       })
       .catch((error) => {
         console.error("Logout failed:", error);

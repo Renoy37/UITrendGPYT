@@ -5,7 +5,7 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
-  const { profile, setProfile, logout, isAuthenticated } =
+  const { profile, setProfile, logout, isAuthenticated, loading } =
     useContext(AuthContext);
 
   useEffect(() => {
