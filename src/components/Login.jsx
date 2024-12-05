@@ -1,6 +1,6 @@
 // react-frontend/src/components/LoginModal.jsx
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
@@ -8,7 +8,7 @@ import axios from "axios";
 const LoginModal = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true); // Toggle between Login and Sign Up
   const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, loading } = useContext(AuthContext);
 
   const toggleForm = () => setIsLogin(!isLogin);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -20,6 +20,7 @@ const LoginModal = ({ onClose }) => {
     const redirectURI = `${
       import.meta.env.VITE_BACKEND_URL
     }/oauth/auth/callback`; // Flask callback URL
+    console.log("Redirect URI:", redirectURI); // Debug log
     const scope = "read,trade";
     const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
       redirectURI
@@ -31,7 +32,13 @@ const LoginModal = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Handle traditional login or sign-up if needed
+    console.log("Traditional login/sign-up submitted"); // Debug log
   };
+
+  // Optional: Log authentication status changes
+  useEffect(() => {
+    console.log("Authentication status:", isAuthenticated);
+  }, [isAuthenticated]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -46,7 +53,9 @@ const LoginModal = ({ onClose }) => {
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
 
-        {!isAuthenticated ? (
+        {loading ? (
+          <div className="text-center">Loading...</div>
+        ) : !isAuthenticated ? (
           // Show message to log in with Deriv first
           <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
             <p className="text-center font-semibold">
@@ -60,7 +69,7 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
         ) : (
-          // Show login form if Deriv token exists
+          // Show login form if authenticated
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">

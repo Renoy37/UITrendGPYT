@@ -5,15 +5,18 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
 const Dashboard = () => {
-  const { profile, setProfile, logout } = useContext(AuthContext);
+  const { profile, setProfile, logout, isAuthenticated } =
+    useContext(AuthContext);
 
   useEffect(() => {
-    if (!profile) {
+    if (isAuthenticated && !profile) {
+      console.log("Fetching user profile...");
       axios
         .get(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
           withCredentials: true,
         })
         .then((response) => {
+          console.log("Profile fetched:", response.data);
           if (response.data && !response.data.error) {
             setProfile(response.data);
           }
@@ -22,10 +25,14 @@ const Dashboard = () => {
           console.error("Failed to fetch profile:", error);
         });
     }
-  }, [profile, setProfile]);
+  }, [profile, setProfile, isAuthenticated]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   if (!profile) {
-    return <div>Loading...</div>;
+    return <div>No profile data available.</div>;
   }
 
   return (

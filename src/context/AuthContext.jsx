@@ -14,32 +14,38 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check authentication status on component mount
+    console.log("Checking authentication status...");
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/profile`, {
         withCredentials: true,
       })
       .then((response) => {
+        console.log("Profile response:", response.data);
         if (response.data && !response.data.error) {
           setIsAuthenticated(true);
           setProfile(response.data);
         } else {
           setIsAuthenticated(false);
+          setProfile(null);
         }
         setLoading(false);
       })
       .catch((error) => {
         console.error("Auth check failed:", error);
         setIsAuthenticated(false);
+        setProfile(null);
         setLoading(false);
       });
   }, []);
 
   const logout = () => {
+    console.log("Logging out...");
     axios
       .get(`${import.meta.env.VITE_BACKEND_URL}/oauth/auth/logout`, {
         withCredentials: true,
       })
       .then((response) => {
+        console.log("Logout response:", response.data);
         setIsAuthenticated(false);
         setProfile(null);
         // Optionally, redirect to home or login page
