@@ -2,13 +2,15 @@
 
 import React, { useState, useContext, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext.jsx";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const { isAuthenticated, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const toggleForm = () => setIsLogin(!isLogin);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
@@ -36,8 +38,10 @@ const LoginModal = ({ onClose }) => {
   };
 
   useEffect(() => {
-    console.log("Authentication status:", isAuthenticated);
-  }, [isAuthenticated]);
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

@@ -1,4 +1,4 @@
-// src/components/Dashboard.jsx
+// react-frontend/src/components/Dashboard.jsx
 
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
