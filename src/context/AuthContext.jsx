@@ -19,11 +19,11 @@ export const AuthProvider = ({ children }) => {
         );
         setProfile(response.data);
         setIsAuthenticated(true);
-        setLoading(false);
       } catch (error) {
-        console.error("Not authenticated or profile fetch failed:", error);
+        console.error("Not authenticated:", error);
         setIsAuthenticated(false);
         setProfile(null);
+      } finally {
         setLoading(false);
       }
     };
@@ -36,7 +36,6 @@ export const AuthProvider = ({ children }) => {
       await axios.get(`${import.meta.env.VITE_BACKEND_URL}/oauth/auth/logout`, {
         withCredentials: true,
       });
-      console.log("Logged out successfully.");
       setIsAuthenticated(false);
       setProfile(null);
     } catch (error) {
@@ -49,8 +48,6 @@ export const AuthProvider = ({ children }) => {
       value={{
         isAuthenticated,
         profile,
-        setIsAuthenticated,
-        setProfile,
         logout,
         loading,
       }}

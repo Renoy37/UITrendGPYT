@@ -6,9 +6,6 @@ import { AuthContext } from "../context/AuthContext.jsx";
 const Dashboard = () => {
   const { profile, logout, isAuthenticated, loading } = useContext(AuthContext);
 
-  console.log("Dashboard - isAuthenticated:", isAuthenticated);
-  console.log("Dashboard - profile:", profile);
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -35,39 +32,33 @@ const Dashboard = () => {
           <div>
             <h2 className="text-xl font-semibold mb-2">Personal Information</h2>
             <p>
-              <span className="font-medium">Full Name:</span>{" "}
-              {profile.fullname || "N/A"}
+              <strong>Full Name:</strong> {profile.fullname || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Email:</span>{" "}
-              {profile.email || "N/A"}
+              <strong>Email:</strong> {profile.email || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Login ID:</span>{" "}
-              {profile.loginid || "N/A"}
+              <strong>Login ID:</strong> {profile.loginid || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Client ID:</span>{" "}
-              {profile.client_id || "N/A"}
+              <strong>Client ID:</strong> {profile.client_id || "N/A"}
             </p>
           </div>
           <div>
             <h2 className="text-xl font-semibold mb-2">Account Details</h2>
             <p>
-              <span className="font-medium">Currency:</span>{" "}
-              {profile.currency || "N/A"}
+              <strong>Currency:</strong> {profile.currency || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Balance:</span>{" "}
+              <strong>Balance:</strong>{" "}
               {profile.balance !== undefined ? profile.balance : "N/A"}{" "}
               {profile.currency || ""}
             </p>
             <p>
-              <span className="font-medium">Country:</span>{" "}
-              {profile.country || "N/A"}
+              <strong>Country:</strong> {profile.country || "N/A"}
             </p>
             <p>
-              <span className="font-medium">Affiliate Token:</span>{" "}
+              <strong>Affiliate Token:</strong>{" "}
               {profile.affiliate_token || "N/A"}
             </p>
           </div>
