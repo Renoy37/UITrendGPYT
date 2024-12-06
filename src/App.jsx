@@ -15,14 +15,12 @@ import RunBot from "./components/RunBot";
 import LoginModal from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { AuthProvider } from "./context/AuthContext.jsx"; // Import AuthProvider
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 function App() {
   return (
     <Router>
       <AuthProvider>
-        {" "}
-        {/* Nest AuthProvider inside Router */}
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -38,7 +36,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* Add more routes as needed */}
+          {/* Redirect any unknown route */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
     </Router>

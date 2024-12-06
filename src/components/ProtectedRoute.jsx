@@ -8,7 +8,11 @@ const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, loading } = useContext(AuthContext);
 
   if (loading) {
-    return <div>Loading...</div>; // Or a spinner component
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-xl">Loading...</div>
+      </div>
+    );
   }
 
   if (!isAuthenticated) {

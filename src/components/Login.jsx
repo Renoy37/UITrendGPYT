@@ -1,3 +1,5 @@
+// src/components/LoginModal.jsx
+
 import React, { useState, useContext, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../context/AuthContext.jsx";
@@ -54,8 +56,11 @@ const LoginModal = ({ onClose }) => {
         </h2>
 
         {loading ? (
-          <div className="text-center">Loading...</div>
+          <div className="flex justify-center">
+            <div className="text-center">Loading...</div>
+          </div>
         ) : !isAuthenticated ? (
+          // Show message to log in with Deriv
           <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
             <p className="text-center font-semibold">
               Please log in with Deriv before accessing your account.
@@ -68,6 +73,7 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
         ) : (
+          // Show login form if already authenticated (example scenario)
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
