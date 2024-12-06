@@ -1,12 +1,15 @@
-// File: components/Navbar.js
-import React, { useState } from "react";
+// src/components/Navbar.js
+
+import React, { useState, useContext } from "react";
 import { TrendingUp, Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import LoginModal from "./Login";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [showLoginModal, setShowLoginModal] = useState(false); // State for modal
+  const { isAuthenticated, logout } = useContext(AuthContext); // Get auth state
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleLoginModal = () => setShowLoginModal(!showLoginModal);
@@ -58,18 +61,51 @@ const Navbar = () => {
               </NavLink>
             </li>
           ))}
-          {/* Log In Button */}
-          <li className="text-center py-2 md:py-0">
-            <button
-              onClick={() => {
-                toggleLoginModal();
-                setIsOpen(false); // Close menu when opening login modal
-              }}
-              className="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
-            >
-              Log In
-            </button>
-          </li>
+
+          {isAuthenticated ? (
+            <>
+              {/* Dashboard Link */}
+              <li className="text-center md:text-left py-2 md:py-0">
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    `block text-white hover:text-gray-300 transition duration-300 px-4 py-2 rounded-md ${
+                      isActive ? "text-yellow-300 font-semibold" : ""
+                    }`
+                  }
+                  onClick={() => setIsOpen(false)} // Close menu on link click in mobile
+                >
+                  Dashboard
+                </NavLink>
+              </li>
+
+              {/* Log Out Button */}
+              <li className="text-center py-2 md:py-0">
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsOpen(false); // Close menu on logout
+                  }}
+                  className="block bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
+                >
+                  Log Out
+                </button>
+              </li>
+            </>
+          ) : (
+            // Log In Button
+            <li className="text-center py-2 md:py-0">
+              <button
+                onClick={() => {
+                  toggleLoginModal();
+                  setIsOpen(false); // Close menu when opening login modal
+                }}
+                className="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
+              >
+                Log In
+              </button>
+            </li>
+          )}
         </ul>
       </div>
 

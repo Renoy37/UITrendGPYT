@@ -15,28 +15,33 @@ const LoginModal = ({ onClose }) => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLoginWithDeriv = () => {
+    console.log("Login with Deriv button clicked");
     const appID = import.meta.env.VITE_DERIV_APP_ID;
+    console.log("Deriv App ID:", appID);
     const redirectURI = `${
       import.meta.env.VITE_BACKEND_URL
     }/oauth/auth/callback`;
+    console.log("Redirect URI:", redirectURI);
     const scope = "read,trade";
     const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
       redirectURI
     )}`;
+    console.log("Deriv Login URL:", derivLoginURL);
     window.location.href = derivLoginURL;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Traditional login/sign-up submitted");
-    // Implement traditional login/sign-up if needed
+    // Implement traditional login/sign-up logic if needed
   };
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
+      onClose(); // Close the modal after navigation
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, onClose]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -56,6 +61,7 @@ const LoginModal = ({ onClose }) => {
             <div>Loading...</div>
           </div>
         ) : !isAuthenticated ? (
+          // Show message to log in with Deriv
           <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
             <p className="text-center font-semibold">
               Please log in with Deriv before accessing your account.
@@ -68,6 +74,7 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
         ) : (
+          // Show login form if already authenticated (example scenario)
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
