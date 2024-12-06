@@ -2,6 +2,7 @@
 
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { profile, logout, isAuthenticated, loading } = useContext(AuthContext);
@@ -63,6 +64,15 @@ const Dashboard = () => {
             </p>
           </div>
         </div>
+        {/* Button to Navigate to RunBot */}
+        <div className="mt-8 text-center">
+          <Link to="/run-bot">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md">
+              Go to RunBot
+            </button>
+          </Link>
+        </div>
+        {/* Optional Logout Button */}
         <div className="mt-6 text-center">
           <button
             onClick={logout}
