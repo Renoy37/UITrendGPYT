@@ -1,13 +1,20 @@
-// react-frontend/src/components/Dashboard.jsx
+// src/components/Dashboard.jsx
 
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 const Dashboard = () => {
-  const { profile, logout } = useContext(AuthContext);
+  const { profile, logout, isAuthenticated, loading } = useContext(AuthContext);
 
-  if (!profile) {
+  console.log("Dashboard - isAuthenticated:", isAuthenticated);
+  console.log("Dashboard - profile:", profile);
+
+  if (loading) {
     return <div>Loading profile...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <div>Please log in to view your dashboard.</div>;
   }
 
   return (

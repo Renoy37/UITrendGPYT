@@ -1,13 +1,9 @@
-// react-frontend/src/context/AuthContext.jsx
-
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// Create the AuthContext
 export const AuthContext = createContext();
 
-// AuthProvider component to wrap around the app
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -16,13 +12,12 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Function to extract token from URL
     const extractTokenFromURL = () => {
       const params = new URLSearchParams(location.search);
       const token = params.get("token");
       if (token) {
+        console.log("Token extracted from URL:", token); // Debugging
         localStorage.setItem("token", token);
-        setIsAuthenticated(true);
         // Remove token from URL
         window.history.replaceState({}, document.title, "/dashboard");
         return token;
@@ -30,18 +25,18 @@ export const AuthProvider = ({ children }) => {
       return null;
     };
 
-    // Function to fetch user profile
     const fetchProfile = async (token) => {
       try {
+        console.log("Fetching profile with token:", token); // Debugging
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-            withCredentials: true,
           }
         );
+        console.log("Profile fetched successfully:", response.data); // Debugging
         setProfile(response.data);
         setIsAuthenticated(true);
         setLoading(false);
@@ -53,11 +48,9 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    // Main authentication flow
     const authenticate = () => {
       const tokenFromURL = extractTokenFromURL();
       const token = tokenFromURL || localStorage.getItem("token");
-
       if (token) {
         fetchProfile(token);
       } else {
@@ -68,7 +61,6 @@ export const AuthProvider = ({ children }) => {
     authenticate();
   }, [location.search]);
 
-  // Logout function
   const logout = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -76,12 +68,12 @@ export const AuthProvider = ({ children }) => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
       });
+      console.log("Logged out successfully.");
       localStorage.removeItem("token");
       setIsAuthenticated(false);
       setProfile(null);
-      navigate("/login"); // Redirect to login page
+      navigate("/login");
     } catch (error) {
       console.error("Logout failed:", error);
     }

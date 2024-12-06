@@ -1,9 +1,6 @@
-// react-frontend/src/components/LoginModal.jsx
-
 import React, { useState, useContext, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../context/AuthContext.jsx";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginModal = ({ onClose }) => {
@@ -59,7 +56,6 @@ const LoginModal = ({ onClose }) => {
         {loading ? (
           <div className="text-center">Loading...</div>
         ) : !isAuthenticated ? (
-          // Show message to log in with Deriv first
           <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
             <p className="text-center font-semibold">
               Please log in with Deriv before accessing your account.
@@ -72,7 +68,6 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
         ) : (
-          // Show login form if authenticated
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
