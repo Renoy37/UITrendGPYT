@@ -15,18 +15,14 @@ const LoginModal = ({ onClose }) => {
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   const handleLoginWithDeriv = () => {
-    console.log("Login with Deriv button clicked");
     const appID = import.meta.env.VITE_DERIV_APP_ID;
-    console.log("Deriv App ID:", appID);
     const redirectURI = `${
       import.meta.env.VITE_BACKEND_URL
     }/oauth/auth/callback`;
-    console.log("Redirect URI:", redirectURI);
     const scope = "read,trade";
     const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
       redirectURI
     )}`;
-    console.log("Deriv Login URL:", derivLoginURL);
     window.location.href = derivLoginURL;
   };
 
@@ -46,12 +42,15 @@ const LoginModal = ({ onClose }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       <div className="relative bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
+        {/* 'X' Button to Close the Modal */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-transform transform hover:scale-110 focus:outline-none"
+          aria-label="Close Login Modal"
         >
           <span className="text-2xl font-bold">&times;</span>
         </button>
+
         <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
@@ -74,7 +73,7 @@ const LoginModal = ({ onClose }) => {
             </button>
           </div>
         ) : (
-          // Show login form if already authenticated (example scenario)
+          // Show login form if already authenticated (optional)
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium text-gray-700">
@@ -111,6 +110,7 @@ const LoginModal = ({ onClose }) => {
                 type="button"
                 onClick={togglePasswordVisibility}
                 className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+                aria-label={showPassword ? "Hide Password" : "Show Password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>

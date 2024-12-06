@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export const AuthContext = createContext();
 
@@ -9,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -38,6 +40,7 @@ export const AuthProvider = ({ children }) => {
       });
       setIsAuthenticated(false);
       setProfile(null);
+      navigate("/"); // Redirect to homepage after logout
     } catch (error) {
       console.error("Logout failed:", error);
     }

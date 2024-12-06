@@ -11,8 +11,10 @@ const Navbar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false); // State for modal
   const { isAuthenticated, logout } = useContext(AuthContext); // Get auth state
 
+  // Separate functions for opening and closing the login modal
+  const openLoginModal = () => setShowLoginModal(true);
+  const closeLoginModal = () => setShowLoginModal(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleLoginModal = () => setShowLoginModal(!showLoginModal);
 
   return (
     <nav className="bg-gradient-to-r from-purple-700 to-indigo-800 p-4 shadow-md">
@@ -96,10 +98,7 @@ const Navbar = () => {
             // Log In Button
             <li className="text-center py-2 md:py-0">
               <button
-                onClick={() => {
-                  toggleLoginModal();
-                  setIsOpen(false); // Close menu when opening login modal
-                }}
+                onClick={openLoginModal}
                 className="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
               >
                 Log In
@@ -110,7 +109,7 @@ const Navbar = () => {
       </div>
 
       {/* Display Login Modal if toggled */}
-      {showLoginModal && <LoginModal onClose={toggleLoginModal} />}
+      {showLoginModal && <LoginModal onClose={closeLoginModal} />}
     </nav>
   );
 };
