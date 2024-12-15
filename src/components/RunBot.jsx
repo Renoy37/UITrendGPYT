@@ -163,6 +163,36 @@ const RunBot = () => {
     }
   };
 
+  // Function to fetch updated bot statuses (optional: can be called periodically)
+  const fetchBotStatuses = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/Bots/bots/status`);
+      const data = await response.json();
+
+      if (data.status === "success") {
+        const runningBots = data.running_bots.reduce((acc, bot) => {
+          acc[bot.bot_name] = bot.status === "running";
+          return acc;
+        }, {});
+        setBotStatus(runningBots);
+      }
+    } catch (error) {
+      console.error("Error fetching bot statuses:", error);
+      // Optionally, show a toast or silently fail
+    }
+  };
+
+  // Optional: Poll bot statuses every minute
+  useEffect(() => {
+    if (isAuthenticated) {
+      const interval = setInterval(() => {
+        fetchBotStatuses();
+      }, 60000); // 60,000 ms = 1 minute
+
+      return () => clearInterval(interval);
+    }
+  }, [isAuthenticated]);
+
   if (!isAuthenticated) {
     return (
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-12">
@@ -207,6 +237,9 @@ const RunBot = () => {
     },
   ];
 
+  // Get the list of running bots for the Running Bots section
+  const runningBots = Object.keys(botStatus).filter((bot) => botStatus[bot]);
+
   return (
     <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-12">
       <h2 className="text-3xl font-bold mb-8 text-center">
@@ -214,16 +247,16 @@ const RunBot = () => {
       </h2>
 
       {/* Action Buttons */}
-      <div className="flex justify-center mb-8 space-x-4">
+      <div className="flex flex-col md:flex-row justify-center mb-8 space-y-4 md:space-y-0 md:space-x-4">
         <button
           onClick={handleStartAllBots}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition duration-300"
+          className="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition duration-300"
         >
           Start All Bots
         </button>
         <button
           onClick={handleStopAllBots}
-          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition duration-300"
+          className="w-full md:w-auto bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-md shadow-lg transition duration-300"
         >
           Stop All Bots
         </button>
@@ -263,6 +296,33 @@ const RunBot = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Running Bots Section */}
+      <div className="mt-12">
+        <h3 className="text-2xl font-semibold mb-4 text-center">
+          Currently Running Bots
+        </h3>
+        {runningBots.length > 0 ? (
+          <div className="bg-green-100 border border-green-300 text-green-800 px-4 py-6 rounded-lg shadow-md">
+            <ul className="list-disc list-inside">
+              {runningBots.map((bot) => {
+                // Find the display name from bots array
+                const botInfo = bots.find((b) => b.name === bot);
+                return (
+                  <li key={bot} className="flex items-center space-x-2">
+                    <CheckCircle className="text-green-500" size={20} />
+                    <span>{botInfo ? botInfo.displayName : bot}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : (
+          <div className="bg-red-100 border border-red-300 text-red-800 px-4 py-6 rounded-lg shadow-md">
+            <p>No bots are currently running.</p>
+          </div>
+        )}
       </div>
     </div>
   );
