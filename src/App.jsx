@@ -16,12 +16,27 @@ import LoginModal from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer
+import "react-toastify/dist/ReactToastify.css"; // Import Toastify CSS
 
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Navbar />
+        {/* ToastContainer handles all toast notifications */}
+        <ToastContainer
+          position="top-right" // Position of the toast
+          autoClose={5000} // Duration before auto-closing
+          hideProgressBar={false} // Show progress bar
+          newestOnTop={false} // Newest toast on top
+          closeOnClick // Close on click
+          rtl={false} // Left-to-right layout
+          pauseOnFocusLoss // Pause on focus loss
+          draggable // Draggable to dismiss
+          pauseOnHover // Pause on hover
+          theme="colored" // Theme of the toast
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
