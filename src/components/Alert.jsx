@@ -3,7 +3,7 @@ import React from "react";
 
 export const Alert = ({ variant, children }) => {
   const variantClasses = {
-    destructive: "bg-red-100 border-red-400 text-red-700",
+    destructive: "bg-rose-50 border-rose-300 text-rose-700",
     // Add other variants as needed
   };
   return (

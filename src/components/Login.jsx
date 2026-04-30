@@ -1,6 +1,6 @@
 // src/components/LoginModal.jsx
 
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,15 @@ const LoginModal = ({ onClose }) => {
 
   const toggleForm = () => setIsLogin(!isLogin);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  const closeLoginModal = useCallback(() => {
+    if (typeof onClose === "function") {
+      onClose();
+    } else {
+      navigate("/");
+    }
+  }, [navigate, onClose]);
 
-  const handleLoginWithDeriv = () => {
+  const handleLoginWithTradingAccount = () => {
     const appID = import.meta.env.VITE_DERIV_APP_ID;
     const redirectURI = `${
       import.meta.env.VITE_BACKEND_URL
@@ -35,23 +42,23 @@ const LoginModal = ({ onClose }) => {
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
-      onClose(); // Close the modal after navigation
+      closeLoginModal(); // Close the modal after navigation
     }
-  }, [isAuthenticated, navigate, onClose]);
+  }, [isAuthenticated, navigate, closeLoginModal]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="relative bg-white rounded-lg p-8 shadow-lg w-full max-w-md">
+    <div className="fixed inset-0 flex items-center justify-center bg-slate-950 bg-opacity-70 z-50">
+      <div className="relative bg-white rounded-lg p-8 shadow-xl w-full max-w-md border border-slate-200">
         {/* 'X' Button to Close the Modal */}
         <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition-transform transform hover:scale-110 focus:outline-none"
+          onClick={closeLoginModal}
+          className="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition-transform transform hover:scale-110 focus:outline-none"
           aria-label="Close Login Modal"
         >
           <span className="text-2xl font-bold">&times;</span>
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+        <h2 className="text-2xl font-bold text-slate-900 mb-4 text-center">
           {isLogin ? "Log In" : "Sign Up"}
         </h2>
 
@@ -60,56 +67,56 @@ const LoginModal = ({ onClose }) => {
             <div>Loading...</div>
           </div>
         ) : !isAuthenticated ? (
-          // Show message to log in with Deriv
-          <div className="bg-yellow-100 text-yellow-700 p-4 rounded-md mb-4">
+          // Show message to connect a trading account
+          <div className="bg-amber-50 text-amber-800 border border-amber-200 p-4 rounded-md mb-4">
             <p className="text-center font-semibold">
-              Please log in with Deriv before accessing your account.
+              Please connect a trading account before accessing your account.
             </p>
             <button
-              onClick={handleLoginWithDeriv}
-              className="w-full mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+              onClick={handleLoginWithTradingAccount}
+              className="w-full mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-md"
             >
-              Log in with Deriv
+              Connect Trading Account
             </button>
           </div>
         ) : (
           // Show login form if already authenticated (optional)
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-700">
                 Username
               </label>
               <input
                 type="text"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 required
               />
             </div>
             {!isLogin && (
               <div>
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-slate-700">
                   Email
                 </label>
                 <input
                   type="email"
-                  className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   required
                 />
               </div>
             )}
             <div className="relative">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-slate-700">
                 Password
               </label>
               <input
                 type={showPassword ? "text" : "password"}
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full p-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 required
               />
               <button
                 type="button"
                 onClick={togglePasswordVisibility}
-                className="absolute right-3 top-9 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute right-3 top-9 text-slate-500 hover:text-slate-700 focus:outline-none"
                 aria-label={showPassword ? "Hide Password" : "Show Password"}
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
@@ -117,18 +124,18 @@ const LoginModal = ({ onClose }) => {
             </div>
             <button
               type="submit"
-              className="w-full bg-purple-700 hover:bg-purple-800 text-white font-bold py-2 px-4 rounded-md"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-md"
             >
               {isLogin ? "Log In" : "Sign Up"}
             </button>
           </form>
         )}
 
-        <p className="text-center text-gray-600 mt-4">
+        <p className="text-center text-slate-600 mt-4">
           {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
           <button
             onClick={toggleForm}
-            className="text-purple-700 hover:text-purple-800 font-semibold"
+            className="text-emerald-700 hover:text-emerald-800 font-semibold"
           >
             {isLogin ? "Sign Up" : "Log In"}
           </button>

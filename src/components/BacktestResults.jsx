@@ -13,23 +13,23 @@ import {
 
 const BacktestResults = ({ loading, result, onExit }) => {
   return (
-    <div className="relative bg-gray-100 rounded-lg shadow-lg p-8">
+    <div className="relative bg-white border border-slate-200 rounded-lg shadow-sm p-8">
       <button
         onClick={onExit}
-        className="absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition"
+        className="absolute top-4 right-4 text-slate-500 hover:text-slate-800 transition"
       >
         <X size={24} />
       </button>
       {loading ? (
         <div className="flex flex-col items-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
-          <p className="mt-4 text-gray-600">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-emerald-500"></div>
+          <p className="mt-4 text-slate-600">
             Running the backtest... Please wait!
           </p>
         </div>
       ) : (
         <>
-          <h2 className="text-3xl font-semibold text-gray-800 mb-6">
+          <h2 className="text-3xl font-semibold text-slate-900 mb-6">
             Backtest Results
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -37,17 +37,17 @@ const BacktestResults = ({ loading, result, onExit }) => {
               ([key, value]) => (
                 <div
                   key={key}
-                  className="bg-gray-50 rounded-lg p-4 transition-transform hover:scale-105"
+                  className="bg-slate-50 rounded-lg p-4 transition-transform hover:scale-105"
                 >
-                  <p className="text-sm text-gray-600 mb-1">{key}</p>
-                  <p className="text-2xl font-bold text-purple-600">{value}</p>
+                  <p className="text-sm text-slate-600 mb-1">{key}</p>
+                  <p className="text-2xl font-bold text-emerald-600">{value}</p>
                 </div>
               )
             )}
           </div>
 
           <div className="mb-4">
-            <h3 className="text-lg font-semibold mb-4 text-gray-700">
+            <h3 className="text-lg font-semibold mb-4 text-slate-800">
               Performance Over Time
             </h3>
             <ResponsiveContainer width="100%" height={300}>

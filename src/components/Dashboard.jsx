@@ -24,9 +24,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-        <h1 className="text-3xl font-bold mb-6 text-center">
+    <div className="min-h-screen bg-slate-50 p-8">
+      <div className="max-w-4xl mx-auto bg-white border border-slate-200 rounded-lg shadow-sm p-6">
+        <h1 className="text-3xl font-bold mb-6 text-center text-slate-900">
           Welcome, {profile.fullname || "User"}
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -67,7 +67,7 @@ const Dashboard = () => {
         {/* Button to Navigate to RunBot */}
         <div className="mt-8 text-center">
           <Link to="/run-bot">
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-md">
+            <button className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-6 rounded-md">
               Go to RunBot
             </button>
           </Link>
@@ -76,7 +76,7 @@ const Dashboard = () => {
         <div className="mt-6 text-center">
           <button
             onClick={logout}
-            className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md"
+            className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-md"
           >
             Logout
           </button>

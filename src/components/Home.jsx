@@ -45,7 +45,8 @@ const Home = () => {
   };
 
   return (
-    <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-12">
+    <div className="min-h-screen bg-slate-50">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12 py-12">
       {backtestView ? (
         <BacktestResults
           loading={loading}
@@ -55,6 +56,7 @@ const Home = () => {
       ) : (
         <HomePageContent startBacktest={startBacktest} loading={loading} />
       )}
+      </div>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 // src/components/Navbar.js
 
 import React, { useState, useContext } from "react";
-import { TrendingUp, Menu, X } from "lucide-react";
+import { CandlestickChart, Menu, X } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import LoginModal from "./Login";
 import { AuthContext } from "../context/AuthContext.jsx";
@@ -15,17 +15,21 @@ const Navbar = () => {
   const openLoginModal = () => setShowLoginModal(true);
   const closeLoginModal = () => setShowLoginModal(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  const navLinkClass = ({ isActive }) =>
+    isActive
+      ? "block bg-slate-800 text-amber-300 border border-amber-300/40 font-semibold transition duration-300 px-4 py-2 rounded-md"
+      : "block text-slate-100 hover:text-emerald-300 hover:bg-slate-900 transition duration-300 px-4 py-2 rounded-md";
 
   return (
-    <nav className="bg-gradient-to-r from-purple-700 to-indigo-800 p-4 shadow-md">
+    <nav className="bg-slate-950 border-b border-emerald-400/30 p-4 shadow-lg shadow-slate-900/20">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <NavLink
           to="/"
-          className="text-white font-bold text-2xl flex items-center"
+          className="text-white font-bold text-2xl flex items-center tracking-wide"
         >
-          <TrendingUp className="mr-2" />
-          TrendGYPT
+          <CandlestickChart className="mr-2 text-emerald-400" />
+          GambiAI
         </NavLink>
 
         {/* Hamburger icon for mobile */}
@@ -40,7 +44,7 @@ const Navbar = () => {
 
         {/* Navigation Links */}
         <ul
-          className={`md:flex md:items-center md:space-x-6 w-full md:w-auto absolute md:static top-16 left-0 md:top-auto md:left-auto bg-gradient-to-r from-purple-700 to-indigo-800 md:bg-transparent z-20 transition-all duration-300 ease-in-out ${
+          className={`md:flex md:items-center md:space-x-6 w-full md:w-auto absolute md:static top-16 left-0 md:top-auto md:left-auto bg-slate-950 md:bg-transparent z-20 transition-all duration-300 ease-in-out ${
             isOpen ? "block" : "hidden"
           }`}
         >
@@ -52,11 +56,7 @@ const Navbar = () => {
                     ? "/"
                     : `/${item.toLowerCase().replace(" ", "-")}`
                 }
-                className={({ isActive }) =>
-                  `block text-white hover:text-gray-300 transition duration-300 px-4 py-2 rounded-md ${
-                    isActive ? "text-yellow-300 font-semibold" : ""
-                  }`
-                }
+                className={navLinkClass}
                 onClick={() => setIsOpen(false)} // Close menu on link click in mobile
               >
                 {item}
@@ -70,11 +70,7 @@ const Navbar = () => {
               <li className="text-center md:text-left py-2 md:py-0">
                 <NavLink
                   to="/dashboard"
-                  className={({ isActive }) =>
-                    `block text-white hover:text-gray-300 transition duration-300 px-4 py-2 rounded-md ${
-                      isActive ? "text-yellow-300 font-semibold" : ""
-                    }`
-                  }
+                  className={navLinkClass}
                   onClick={() => setIsOpen(false)} // Close menu on link click in mobile
                 >
                   Dashboard
@@ -88,7 +84,7 @@ const Navbar = () => {
                     logout();
                     setIsOpen(false); // Close menu on logout
                   }}
-                  className="block bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
+                  className="block bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
                 >
                   Log Out
                 </button>
@@ -99,7 +95,7 @@ const Navbar = () => {
             <li className="text-center py-2 md:py-0">
               <button
                 onClick={openLoginModal}
-                className="block bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md w-full md:w-auto"
+                className="block bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-2 px-4 rounded-md w-full md:w-auto"
               >
                 Log In
               </button>

@@ -3,12 +3,8 @@ import React, { useState, useEffect } from "react";
 import { LineChart, Line, ResponsiveContainer, YAxis } from "recharts";
 import { useNavigate } from "react-router-dom";
 import {
-  Bitcoin,
-  TrendingUp,
   Clock,
   AlertCircle,
-  ArrowUpCircle,
-  ArrowDownCircle,
   Activity,
 } from "lucide-react";
 
@@ -36,22 +32,22 @@ const StrategyCard = ({ strategy }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:scale-102 border border-gray-100">
+    <div className="bg-white rounded-lg shadow-sm p-6 transition-all duration-300 hover:shadow-lg border border-slate-200">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className={`p-2 rounded-lg ${strategy.bgColor}`}>
             {strategy.icon}
           </div>
           <div>
-            <h3 className="font-bold text-lg text-gray-800">{strategy.name}</h3>
-            <p className="text-sm text-gray-500">{strategy.pairs}</p>
+            <h3 className="font-bold text-lg text-slate-900">{strategy.name}</h3>
+            <p className="text-sm text-slate-500">{strategy.pairs}</p>
           </div>
         </div>
         <div
           className={`px-3 py-1 rounded-full text-sm ${
             strategy.status === "Active"
-              ? "bg-green-100 text-green-700"
-              : "bg-yellow-100 text-yellow-700"
+              ? "bg-emerald-100 text-emerald-700"
+              : "bg-amber-100 text-amber-700"
           }`}
         >
           {strategy.status}
@@ -75,19 +71,19 @@ const StrategyCard = ({ strategy }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-4">
-        <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-sm text-gray-600">24h Profit</p>
+        <div className="bg-slate-50 rounded-lg p-3">
+          <p className="text-sm text-slate-600">24h Profit</p>
           <p className={`text-lg font-bold ${strategy.profitClass}`}>
             {strategy.profit}
           </p>
         </div>
-        <div className="bg-gray-50 rounded-lg p-3">
-          <p className="text-sm text-gray-600">Win Rate</p>
-          <p className="text-lg font-bold text-gray-800">{strategy.winRate}</p>
+        <div className="bg-slate-50 rounded-lg p-3">
+          <p className="text-sm text-slate-600">Win Rate</p>
+          <p className="text-lg font-bold text-slate-900">{strategy.winRate}</p>
         </div>
       </div>
 
-      <div className="flex justify-between items-center text-sm text-gray-500 border-t pt-4">
+      <div className="flex justify-between items-center text-sm text-slate-500 border-t border-slate-200 pt-4">
         <div className="flex items-center">
           <Clock size={16} className="mr-1" />
           {strategy.timeframe}
@@ -106,7 +102,7 @@ const StrategyCard = ({ strategy }) => {
       <div className="mt-4 flex justify-end">
         <button
           onClick={handleRunClick}
-          className="text-sm bg-purple-600 hover:bg-purple-700 text-white font-semibold py-1 px-3 rounded-md"
+          className="text-sm bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-1 px-3 rounded-md"
         >
           Run
         </button>
