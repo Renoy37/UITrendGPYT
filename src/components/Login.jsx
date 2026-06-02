@@ -5,6 +5,33 @@ import { Eye, EyeOff } from "lucide-react";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
+const DERIV_AUTH_URL = "https://auth.deriv.com/oauth2/auth";
+const PKCE_CHARSET =
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+
+const base64UrlEncode = (buffer) =>
+  btoa(String.fromCharCode(...new Uint8Array(buffer)))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+
+const createRandomString = (length) => {
+  const bytes = crypto.getRandomValues(new Uint8Array(length));
+
+  return Array.from(bytes)
+    .map((byte) => PKCE_CHARSET[byte % PKCE_CHARSET.length])
+    .join("");
+};
+
+const createPkceChallenge = async (codeVerifier) => {
+  const hash = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(codeVerifier)
+  );
+
+  return base64UrlEncode(hash);
+};
+
 const LoginModal = ({ onClose }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,16 +48,44 @@ const LoginModal = ({ onClose }) => {
     }
   }, [navigate, onClose]);
 
-  const handleLoginWithTradingAccount = () => {
-    const appID = import.meta.env.VITE_DERIV_APP_ID;
-    const redirectURI = `${
-      import.meta.env.VITE_BACKEND_URL
-    }/oauth/auth/callback`;
-    const scope = "read,trade";
-    const derivLoginURL = `https://oauth.deriv.com/oauth2/authorize?app_id=${appID}&scope=${scope}&redirect_uri=${encodeURIComponent(
-      redirectURI
-    )}`;
-    window.location.href = derivLoginURL;
+  const handleLoginWithTradingAccount = async () => {
+    const clientID =
+      import.meta.env.VITE_DERIV_CLIENT_ID ||
+      import.meta.env.VITE_DERIV_APP_ID;
+    const legacyAppID = import.meta.env.VITE_DERIV_LEGACY_APP_ID;
+    const redirectURI =
+      import.meta.env.VITE_DERIV_REDIRECT_URI ||
+      `${window.location.origin}/oauth/callback`;
+    const scope = import.meta.env.VITE_DERIV_SCOPE || "trade account_manage";
+
+    if (!clientID) {
+      alert("Missing VITE_DERIV_CLIENT_ID in your environment settings.");
+      return;
+    }
+
+    const codeVerifier = createRandomString(64);
+    const codeChallenge = await createPkceChallenge(codeVerifier);
+    const state = createRandomString(32);
+    const loginParams = new URLSearchParams({
+      response_type: "code",
+      client_id: clientID,
+      redirect_uri: redirectURI,
+      scope,
+      state,
+      code_challenge: codeChallenge,
+      code_challenge_method: "S256",
+    });
+
+    if (legacyAppID) {
+      loginParams.set("app_id", legacyAppID);
+    }
+
+    sessionStorage.setItem("pkce_code_verifier", codeVerifier);
+    sessionStorage.setItem("oauth_state", state);
+    sessionStorage.setItem("oauth_redirect_uri", redirectURI);
+    sessionStorage.setItem("oauth_return_to", "/run-bot");
+
+    window.location.href = `${DERIV_AUTH_URL}?${loginParams.toString()}`;
   };
 
   const handleSubmit = (e) => {
@@ -41,7 +96,7 @@ const LoginModal = ({ onClose }) => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      navigate("/run-bot");
       closeLoginModal(); // Close the modal after navigation
     }
   }, [isAuthenticated, navigate, closeLoginModal]);

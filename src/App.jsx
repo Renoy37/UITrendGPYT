@@ -14,6 +14,7 @@ import Strategies from "./components/Strategies";
 import RunBot from "./components/RunBot";
 import LoginModal from "./components/Login";
 import Dashboard from "./components/Dashboard";
+import OAuthCallback from "./components/OAuthCallback";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { ToastContainer } from "react-toastify"; // Import ToastContainer
@@ -43,6 +44,8 @@ function App() {
           <Route path="/strategies" element={<Strategies />} />
           <Route path="/run-bot" element={<RunBot />} />
           <Route path="/login" element={<LoginModal />} />
+          <Route path="/oauth/callback" element={<OAuthCallback />} />
+          <Route path="/oauth/auth/callback" element={<OAuthCallback />} />
           <Route
             path="/dashboard"
             element={
