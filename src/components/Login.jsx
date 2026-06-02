@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 const DERIV_AUTH_URL = "https://auth.deriv.com/oauth2/auth";
+const DERIV_CLIENT_ID = "63393";
 const PKCE_CHARSET =
   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
 
@@ -51,7 +52,8 @@ const LoginModal = ({ onClose }) => {
   const handleLoginWithTradingAccount = async () => {
     const clientID =
       import.meta.env.VITE_DERIV_CLIENT_ID ||
-      import.meta.env.VITE_DERIV_APP_ID;
+      import.meta.env.VITE_DERIV_APP_ID ||
+      DERIV_CLIENT_ID;
     const legacyAppID = import.meta.env.VITE_DERIV_LEGACY_APP_ID;
     const redirectURI =
       import.meta.env.VITE_DERIV_REDIRECT_URI ||
