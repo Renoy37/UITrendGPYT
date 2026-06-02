@@ -16,6 +16,26 @@ const getFirstParam = (params, names) => {
   return "";
 };
 
+const getCallbackParams = (searchParams) => {
+  const callbackParams = new URLSearchParams(searchParams);
+  const hash = window.location.hash.replace(/^#/, "");
+
+  if (!hash) {
+    return callbackParams;
+  }
+
+  const hashQuery = hash.includes("?") ? hash.split("?").pop() : hash;
+  const hashParams = new URLSearchParams(hashQuery);
+
+  hashParams.forEach((value, key) => {
+    if (!callbackParams.has(key)) {
+      callbackParams.set(key, value);
+    }
+  });
+
+  return callbackParams;
+};
+
 const getLegacyOAuthProfile = (params) => {
   const accessToken = getFirstParam(params, ["access_token", "token", "token1"]);
 
@@ -87,15 +107,16 @@ const OAuthCallback = () => {
       setLoading(true);
 
       try {
-        const error = searchParams.get("error");
+        const callbackParams = getCallbackParams(searchParams);
+        const error = callbackParams.get("error");
 
         if (error) {
           throw new Error(
-            searchParams.get("error_description") || "Deriv login was cancelled."
+            callbackParams.get("error_description") || "Deriv login was cancelled."
           );
         }
 
-        const legacyAuth = getLegacyOAuthProfile(searchParams);
+        const legacyAuth = getLegacyOAuthProfile(callbackParams);
 
         if (legacyAuth) {
           const returnTo = sessionStorage.getItem("oauth_return_to") || "/run-bot";
@@ -108,8 +129,8 @@ const OAuthCallback = () => {
           return;
         }
 
-        const code = searchParams.get("code");
-        const returnedState = searchParams.get("state");
+        const code = callbackParams.get("code");
+        const returnedState = callbackParams.get("state");
         const storedState = sessionStorage.getItem("oauth_state");
         const codeVerifier = sessionStorage.getItem("pkce_code_verifier");
         const redirectUri =
